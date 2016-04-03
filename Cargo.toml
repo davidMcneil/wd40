@@ -1,0 +1,6 @@
+[package]
+name = "wd40"
+version = "0.1.0"
+authors = ["David McNeil"]
+
+[dependencies]
