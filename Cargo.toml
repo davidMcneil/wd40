@@ -3,4 +3,12 @@ name = "wd40"
 version = "0.1.0"
 authors = ["David McNeil"]
 
+[lib]
+name = "lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "main"
+path = "src/main.rs"
+
 [dependencies]
