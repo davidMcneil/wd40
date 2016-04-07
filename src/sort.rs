@@ -74,26 +74,13 @@ pub fn insertion<T>(vec: &Vec<T>) -> Vec<T>
 mod tests {
 	use super::*;
 
-	fn vectors_equal<T>(vec1: &Vec<T>, vec2: &Vec<T>) -> bool
-		where T: Eq {
-		if vec1.len() != vec2.len() {
-			return false;
-		}
-		for i in 0..(vec1.len()) {
-			if vec1[i] != vec2[i] {
-				return false;
-			}
-		}
-		true
-	}
-
     #[test]
     fn bubble_test() {
         let vec = vec![22, -31, 678, -131, 43, 7, -2];
         let mut sorted_vec = vec.clone();
         sorted_vec.sort();
         let my_sorted_vec = bubble(&vec);
-        assert!(vectors_equal(&my_sorted_vec, &sorted_vec));
+        assert_eq!(my_sorted_vec, sorted_vec);
     }
 
     #[test]
@@ -102,7 +89,7 @@ mod tests {
         let mut sorted_vec = vec.clone();
         sorted_vec.sort();
         let my_sorted_vec = selection(&vec);
-        assert!(vectors_equal(&my_sorted_vec, &sorted_vec));
+        assert_eq!(my_sorted_vec, sorted_vec);
     }
 
     #[test]
@@ -111,6 +98,6 @@ mod tests {
         let mut sorted_vec = vec.clone();
         sorted_vec.sort();
         let my_sorted_vec = insertion(&vec);
-        assert!(vectors_equal(&my_sorted_vec, &sorted_vec));
+        assert_eq!(my_sorted_vec, sorted_vec);
     }
 }
