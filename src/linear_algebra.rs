@@ -1,3 +1,5 @@
+use std::cmp;
+
 #[derive(Debug, PartialEq, PartialOrd, Clone)]
 pub struct Matrix(Vec<Vec<f64>>);
 
@@ -36,12 +38,8 @@ impl Matrix {
 
 	pub fn identity(rows: u64, cols: u64) -> Matrix {
 		let mut mat = Matrix::zeros(rows, cols);
-		for r in 0..rows {
-			for c in 0..cols {
-				if r == c {
-					mat.set_inplace(1.0, r, c);
-				}
-			}
+		for i in 0..cmp::min(rows, cols) {
+			mat.set_inplace(1.0, i, i);
 		}
 		mat
 	}
@@ -87,6 +85,22 @@ impl Matrix {
 		mat
 	}
 
+    pub fn dot_product(mat1: Matrix, mat2: Matrix) -> Matrix {
+        let mut mat = Matrix::zeros(rows, cols);
+        let (mat1_rows, mat1_cols)  = mat1.size();
+        let (mat2_rows, mat2_cols)  = mat2.size();
+        if mat1_rows != mat2_cols {
+            return mat;
+        }
+        for r in 0..rows {
+            for c in 0..cols {
+                let mut product = mat1.get(r, c) * mat2.get(r, c);
+                mat.set_inplace(product, r, c);
+            }
+        }
+        return mat;
+    }
+
 	fn set_inplace(&mut self, val: f64, row: u64, col: u64) -> f64 {
 		self.0[row as usize][col as usize] = val;
 		val
@@ -96,6 +110,51 @@ impl Matrix {
 #[cfg(test)]
 mod test {
 	use super::*;
+
+	 #[test]
+    fn constant_test() {
+    	let val = 2.15;
+    	let rows = 5;
+    	let cols = 4;
+    	let m = Matrix::constant(val, rows, cols);
+    	for r in 0..rows {
+    		for c in 0..cols {
+    			assert_eq!(val, m.get(r, c));
+    		}
+    	}
+    	let rows = 2;
+    	let cols = 12;
+    	let m0 = Matrix::zeros(rows, cols);
+    	for r in 0..rows {
+    		for c in 0..cols {
+    			assert_eq!(0.0, m0.get(r, c));
+    		}
+    	}
+    	let rows = 11;
+    	let cols = 1;
+    	let m1 = Matrix::ones(rows, cols);
+    	for r in 0..rows {
+    		for c in 0..cols {
+    			assert_eq!(1.0, m1.get(r, c));
+    		}
+    	}
+    }
+
+    #[test]
+    fn identity_test() {
+    	let rows = 17;
+    	let cols = 13;
+    	let m0 = Matrix::identity(rows, cols);
+    	for r in 0..rows {
+    		for c in 0..cols {
+    			if r == c {
+    				assert_eq!(1.0, m0.get(r, c));
+    			} else {
+    				assert_eq!(0.0, m0.get(r, c));
+    			}
+    		}
+    	}
+    }
 
     #[test]
     fn it_works() {

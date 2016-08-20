@@ -26,7 +26,6 @@ pub fn bubble<T>(vec: &Vec<T>) -> Vec<T>
 	new_vec
 }
 
-
 pub fn selection_inplace<T>(vec: &mut Vec<T>)
 	where T: PartialOrd + Copy {
 	let mut minimum_index;
